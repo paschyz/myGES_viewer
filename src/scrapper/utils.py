@@ -122,3 +122,28 @@ def get_marks(html):
     #         print('---')
     # else:
     #     print("Table with ID 'marksForm:marksWidget:coursesTable' not found in the HTML.")
+
+
+def insert_documents(json_string, collection, user):
+    try:
+        json_data = json.loads(json_string)
+        documents = []
+        for item in json_data:
+            # Process and transform each item into a dictionary format
+            document = {
+                'user': user,
+                'matiere': item['Matière'],
+                'intervenant': item['Intervenant'],
+                'coef': item['Coef.'],
+                'ects': item['ECTS'],
+                'cc1': item['CC1'],
+                'cc2': item['CC2'],
+                'exam': item['Exam']
+            }
+            documents.append(document)
+
+        result = collection.insert_many(documents)
+        print(
+            f"Inserted {len(result.inserted_ids)} documents into {collection.name}")
+    except Exception as e:
+        print(f"Error inserting documents: {str(e)}")

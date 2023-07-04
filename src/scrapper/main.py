@@ -9,13 +9,18 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
 
-from utils import login, extract_html, go_to_marks_page, parse_all_links, get_marks
+from pymongo import MongoClient
+
+from utils import login, extract_html, go_to_marks_page, parse_all_links, get_marks, insert_documents
 
 
 load_dotenv()
+mongo_db_key = os.getenv("MONGO_DB_KEY")
 username = os.getenv("LOGIN_USERNAME")
 password = os.getenv("LOGIN_PASSWORD")
-
+client_mongo = MongoClient(mongo_db_key)
+db = client_mongo["myGES"]
+users_collection = db["marks_test"]
 # Define directory for downloaded images
 download_dir = os.path.join(os.getcwd(), 'src/scrapper/json')
 
@@ -38,19 +43,17 @@ service = Service("geckodriver.exe")
 driver = webdriver.Firefox(
     service=service, options=options, firefox_profile=profile)
 
-# Set up FUTWIZ page URL
 url = "https://myges.fr/#/"
 
-# Define function to fill input fields by ID
 
 driver.get(url)
 login(username, password, driver)
 go_to_marks_page(driver)
 html = extract_html(driver)
 json = get_marks(html)
-json_file_path = os.path.join(download_dir, 'data.json')
-with open(json_file_path, 'w', encoding='utf-8') as json_file:
-    json_file.write(json)
 
+# Pass the JSON string and the MongoDB collection to the function
+user = 'paschyz'
+insert_documents(json, users_collection, user)
 time.sleep(5)
 driver.quit()
