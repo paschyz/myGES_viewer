@@ -1,0 +1,110 @@
+[
+  {
+    "Matière": "S2 - agilité et scrum",
+    "Intervenant": "M. COAT",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": 10.0,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - algorithmique avancée : listes, tris et arbres",
+    "Intervenant": "M. RAYNAL",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": 8.5,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - anglais professionnel",
+    "Intervenant": "M. RAULIN",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - api avec nodejs",
+    "Intervenant": "M. BRIATTE",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - bases de données nosql",
+    "Intervenant": "M. DELON",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - développement frontend avec angular",
+    "Intervenant": "M. BUSO",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": 20.0,
+    "CC2": 16.0,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - linux orienté développeurs",
+    "Intervenant": "M. KIFFER",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - mission en entreprise",
+    "Intervenant": "Mme CRAMAUSSEL",
+    "Coef.": 1.0,
+    "ECTS": 1.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - open vie associative",
+    "Intervenant": "Mme RAGONNET",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - projet annuel",
+    "Intervenant": "M. SANANES",
+    "Coef.": 3.0,
+    "ECTS": 3.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - scripting python",
+    "Intervenant": "M. RAYNAL",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  },
+  {
+    "Matière": "S2 - tests logiciels",
+    "Intervenant": "M. NYANTCHOU NOUBISSIE",
+    "Coef.": 2.0,
+    "ECTS": 2.0,
+    "CC1": null,
+    "CC2": null,
+    "Exam": null
+  }
+]

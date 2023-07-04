@@ -54,34 +54,71 @@ def parse_all_links(html):
 
 def get_marks(html):
     soup = BeautifulSoup(html, features="html.parser")
-    print(soup)
+    # print(soup)
     # Find the table containing the data
-    table = soup.find('table', id='marksForm:marksWidget:coursesTable')
+    # table = soup.find('div', id='marksForm:marksWidget:coursesTable')
+    data = []
+    # Find the table element
+    table = soup.find('table', attrs={"role": "grid"})
 
-    if table:
-        # Find all the table rows
-        rows = table.find_all('tr')
+    # Iterate over each row in the table body
+    for row in table.tbody.find_all('tr'):
+        # Extract the data from each cell
+        cells = row.find_all('td')
+        matiere = cells[0].text.strip()
+        intervenant = cells[1].text.strip()
+        coef = cells[2].text.strip()
+        ects = cells[3].text.strip()
+        cc1 = cells[4].text.strip()
+        cc2 = cells[5].text.strip()
+        exam = cells[6].text.strip()
+        # Replace comma with period for decimal values
+        cc1 = cc1.replace(',', '.') if cc1 else None
+        cc2 = cc2.replace(',', '.') if cc2 else None
+        exam = exam.replace(',', '.') if exam else None
+        # Create a dictionary for each row of data
+        row_data = {
+            "Matière": matiere,
+            "Intervenant": intervenant,
+            "Coef.": float(coef) if coef else None,
+            "ECTS": float(ects) if ects else None,
+            "CC1": float(cc1) if cc1 else None,
+            "CC2": float(cc2) if cc2 else None,
+            "Exam": float(exam) if exam else None
+        }
 
-        # Loop through each row and extract the desired information
-        for row in rows:
-            # Extract data from each cell
-            cells = row.find_all('td')
-            subject = cells[0].text.strip()
-            instructor = cells[1].text.strip()
-            coef = cells[2].text.strip()
-            ects = cells[3].text.strip()
-            cc1 = cells[4].text.strip()
-            cc2 = cells[5].text.strip()
-            exam = cells[6].text.strip()
+        # Append the dictionary to the data list
+        data.append(row_data)
 
-            # Print the extracted information
-            print('Subject:', subject)
-            print('Instructor:', instructor)
-            print('Coef:', coef)
-            print('ECTS:', ects)
-            print('CC1:', cc1)
-            print('CC2:', cc2)
-            print('Exam:', exam)
-            print('---')
-    else:
-        print("Table with ID 'marksForm:marksWidget:coursesTable' not found in the HTML.")
+    # Convert the data list to JSON
+    json_data = json.dumps(data, indent=2, ensure_ascii=False)
+
+    # Print the JSON data
+    return json_data
+    # if table:
+    #     # Find all the table rows
+    #     rows = table.find_all('tr')
+
+    #     # Loop through each row and extract the desired information
+    #     for row in rows:
+    #         # Extract data from each cell
+    #         cells = row.find_all('td')
+    #         subject = cells[0].text.strip()
+    #         instructor = cells[1].text.strip()
+    #         coef = cells[2].text.strip()
+    #         ects = cells[3].text.strip()
+    #         cc1 = cells[4].text.strip()
+    #         cc2 = cells[5].text.strip()
+    #         exam = cells[6].text.strip()
+
+    #         # Print the extracted information
+    #         print('Subject:', subject)
+    #         print('Instructor:', instructor)
+    #         print('Coef:', coef)
+    #         print('ECTS:', ects)
+    #         print('CC1:', cc1)
+    #         print('CC2:', cc2)
+    #         print('Exam:', exam)
+    #         print('---')
+    # else:
+    #     print("Table with ID 'marksForm:marksWidget:coursesTable' not found in the HTML.")

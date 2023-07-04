@@ -16,11 +16,11 @@ load_dotenv()
 username = os.getenv("LOGIN_USERNAME")
 password = os.getenv("LOGIN_PASSWORD")
 
-# # Define directory for downloaded images
-# download_dir = os.path.join(os.getcwd(), 'images')
+# Define directory for downloaded images
+download_dir = os.path.join(os.getcwd(), 'src/scrapper/json')
 
-# if not os.path.exists(download_dir):
-#     os.makedirs(download_dir)
+if not os.path.exists(download_dir):
+    os.makedirs(download_dir)
 
 # Set up Selenium driver
 options = webdriver.FirefoxOptions()
@@ -31,7 +31,7 @@ profile = webdriver.FirefoxProfile(
 
 profile.set_preference("browser.download.folderList", 2)
 profile.set_preference("browser.download.manager.showWhenStarting", False)
-# profile.set_preference("browser.download.dir", download_dir)
+profile.set_preference("browser.download.dir", download_dir)
 profile.set_preference(
     "browser.helperApps.neverAsk.saveToDisk", "image/jpeg,image/png")
 service = Service("geckodriver.exe")
@@ -44,11 +44,13 @@ url = "https://myges.fr/#/"
 # Define function to fill input fields by ID
 
 driver.get(url)
-
 login(username, password, driver)
 go_to_marks_page(driver)
 html = extract_html(driver)
-get_marks(html)
+json = get_marks(html)
+json_file_path = os.path.join(download_dir, 'data.json')
+with open(json_file_path, 'w', encoding='utf-8') as json_file:
+    json_file.write(json)
 
 time.sleep(5)
 driver.quit()
