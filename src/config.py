@@ -9,7 +9,7 @@ myges_viewer_key = os.getenv("DISCORD_BOT_KEY")
 
 # mongo_db_key = os.getenv("MONGO_DB_KEY")
 
-guild_id_myges_viewer = os.getenv("GUILD_ID_TEST")
+guild_id_myges_viewer = os.getenv("GUILD_ID_MYGES_VIEWER")
 MY_GUILD = discord.Object(id=guild_id_myges_viewer)
 
 # client_mongo = MongoClient(
