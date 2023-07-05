@@ -1,8 +1,8 @@
-import os
-import discord
-from dotenv import load_dotenv
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import discord
 
+import os
 
 load_dotenv()
 myges_viewer_key = os.getenv("DISCORD_BOT_KEY")
@@ -19,4 +19,11 @@ collection_marks = db["marks"]
 collection_planning = db["planning"]
 collection_trombinoscope = db["trombinoscope"]
 collection_users = db["users"]
-intents = discord.Intents.default()
+filter = {}
+
+# Define the update operation to set the user_discord_id field as an integer
+update = {"$set": {"user_discord_id": 314809676447350785}}
+
+# Use the update_many method to update the matching documents
+result = collection_marks.update_many(filter, update)
+print("Number of documents updated:", result.modified_count)

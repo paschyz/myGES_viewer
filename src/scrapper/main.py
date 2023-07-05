@@ -30,23 +30,27 @@ if not os.path.exists(download_dir):
 # Set up Selenium driver
 options = webdriver.FirefoxOptions()
 # options.headless = True
-profile = webdriver.FirefoxProfile(
-    os.getenv("FIREFOX_PROFILE_PATH"))
+# profile = webdriver.FirefoxProfile(
+#     os.getenv("FIREFOX_PROFILE_PATH"))
 
 
-profile.set_preference("browser.download.folderList", 2)
-profile.set_preference("browser.download.manager.showWhenStarting", False)
-profile.set_preference("browser.download.dir", download_dir)
-profile.set_preference(
-    "browser.helperApps.neverAsk.saveToDisk", "image/jpeg,image/png")
+# profile.set_preference("browser.download.folderList", 2)
+# profile.set_preference("browser.download.manager.showWhenStarting", False)
+# profile.set_preference("browser.download.dir", download_dir)
+# profile.set_preference(
+#     "browser.helperApps.neverAsk.saveToDisk", "image/jpeg,image/png")
 service = Service("geckodriver.exe")
+# driver = webdriver.Firefox(
+#     service=service, options=options, firefox_profile=profile)
 driver = webdriver.Firefox(
-    service=service, options=options, firefox_profile=profile)
+    service=service, options=options)
 
 url = "https://myges.fr/#/"
 
 
 driver.get(url)
+time.sleep(5)
+
 login(username, password, driver)
 go_to_marks_page(driver)
 html = extract_html(driver)

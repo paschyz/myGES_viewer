@@ -9,7 +9,8 @@
   "ects": 2,
   "cc1": 10,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a34"
@@ -21,7 +22,8 @@
   "ects": 2,
   "cc1": 8.5,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a35"
@@ -33,7 +35,8 @@
   "ects": 2,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a36"
@@ -45,7 +48,8 @@
   "ects": 2,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a37"
@@ -57,7 +61,8 @@
   "ects": 2,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a38"
@@ -69,7 +74,8 @@
   "ects": 2,
   "cc1": 20,
   "cc2": 16,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a39"
@@ -81,7 +87,8 @@
   "ects": 2,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a3a"
@@ -93,7 +100,8 @@
   "ects": 1,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a3b"
@@ -105,7 +113,8 @@
   "ects": 2,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a3c"
@@ -117,7 +126,8 @@
   "ects": 3,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a3d"
@@ -129,7 +139,8 @@
   "ects": 2,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 },{
   "_id": {
     "$oid": "64a47cccd06979b97bb05a3e"
@@ -141,5 +152,6 @@
   "ects": 2,
   "cc1": null,
   "cc2": null,
-  "exam": null
+  "exam": null,
+  "user_discord_id": 314809676447350785
 }]
