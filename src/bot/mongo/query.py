@@ -25,5 +25,5 @@ filter = {}
 update = {"$set": {"user_discord_id": 314809676447350785}}
 
 # Use the update_many method to update the matching documents
-result = collection_marks.update_many(filter, update)
+result = collection_planning.update_many(filter, update)
 print("Number of documents updated:", result.modified_count)

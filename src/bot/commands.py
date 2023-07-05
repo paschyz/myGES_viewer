@@ -16,7 +16,7 @@ def setup_commands(client: MyClient):
             
     @client.tree.command(description="Voir ses notes")
     async def notes(interaction: discord.Interaction):
-        if not await verify_if_user_exists(interaction,collection_planning):
+        if not await verify_if_user_exists(interaction,collection_marks):
             return
         embeds=[]
         try:
@@ -35,17 +35,24 @@ def setup_commands(client: MyClient):
 
     @client.tree.command(description="Se connecter à MYges")
     async def login(interaction: discord.Interaction):
-        await interaction.response.send_message(f'Se connecter à MYges')
+        await interaction.response.send_message(f'Se connecter à myGES')
 
     @client.tree.command(description="Permet de mettre à jour ses notes, planning et trombinoscope")
     async def scrape(interaction: discord.Interaction):
         await interaction.response.send_message(f'Permet de mettre à jour ses notes, planning et trombinoscope')
-
+        
    
 
     @client.tree.command(description="Voir l'emploi du temps")
     async def planning(interaction: discord.Interaction):
-        await interaction.response.send_message(f'Voir l\'emploi du temps')
+        if not await verify_if_user_exists(interaction,collection_planning):
+            return
+        embeds=[]
+        try:
+            documents_planning = collection_planning.find({"user_discord_id": interaction.user.id})
+            await display_planning(interaction,documents_planning)
+        except Exception as e:
+            print(f"-- Error : {str(e)}")
 
     @client.tree.command(description="Voir le corps étudiant et enseignant")
     async def trombinoscope(interaction: discord.Interaction):

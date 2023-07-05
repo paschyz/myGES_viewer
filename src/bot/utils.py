@@ -48,8 +48,6 @@ def connect_to_mongo(uri):
 async def display_marks(interaction, documents_marks):
     embeds = []
     for mark in documents_marks:
-        document_id = mark.get("_id")
-        user = mark.get("user")
         matiere = mark.get("matiere")
         intervenant = mark.get("intervenant")
         coef = mark.get("coef")
@@ -58,25 +56,50 @@ async def display_marks(interaction, documents_marks):
         cc2 = mark.get("cc2")
         exam = mark.get("exam")
 
-        message = f"Matière: {matiere}\n" \
-                  f"Intervenant: {intervenant}\n" \
-                  f"Coef.: {coef}\n" \
-                  f"ECTS: {ects}\n" \
-                  f"CC1: {cc1}\n" \
-                  f"CC2: {cc2}\n" \
-                  f"Exam: {exam}"
 
         embed = discord.Embed()
         embed.title = f"Matière: {matiere}\n"
         embed.set_footer(text=f"Intervenant: {intervenant}\n")
         embed.colour = discord.Color.blue()  # Set the color to blue
 
-        embed.description = f"CC1: {cc1}\n" \
-                            f"CC2: {cc2}\n" \
-                            f"Exam: {exam}\n\n" \
-                            f"Coef.: {coef}\n" \
-                            f"ECTS: {ects}\n"
+
+        embed.add_field(name="CC1", value=cc1, inline=True)
+        embed.add_field(name="CC2", value=cc2, inline=True)
+        embed.add_field(name="Exam", value=exam, inline=True)
+        embed.add_field(name="Coef.", value=coef, inline=True)
+        embed.add_field(name="ECTS", value=ects, inline=True)
         embeds.append(embed)
+
+    for embed in embeds:
+        await interaction.channel.send(embed=embed)
+        
+        
+
+async def display_planning(interaction, documents_planning):
+    embeds = []
+    for planning in documents_planning:
+        duree = planning.get("duree")
+        matiere = planning.get("matiere")
+        intervenant = planning.get("intervenant")
+        salle = planning.get("salle")
+        type = planning.get("type")
+        modalite = planning.get("modalite")
+        date = planning.get("date")
+
+        embed = discord.Embed()
+        embed.title = f"Matière: {matiere}"
+        embed.set_footer(text=f"Intervenant: {intervenant}")
+        embed.colour = discord.Color.blue()
+
+        embed.add_field(name="Durée", value=duree, inline=True)
+        embed.add_field(name="Date", value=date, inline=True)
+        embed.add_field(name="Salle", value=salle, inline=True)
+        embed.add_field(name="Type", value=type, inline=True)
+        embed.add_field(name="Modalité", value=modalite, inline=True)
+
+
+        embeds.append(embed)
+
 
     for embed in embeds:
         await interaction.channel.send(embed=embed)
