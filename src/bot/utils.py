@@ -1,18 +1,26 @@
 from config import *
 
+import base64
+import aiohttp
 from pymongo import MongoClient
 import discord
+import hashlib
+
+
 def connect_to_mongodb(uri):
     client = MongoClient(uri)
     return client
+
 
 def select_database(client, db_name):
     db = client[db_name]
     return db
 
+
 def select_collection(db, collection_name):
     collection = db[collection_name]
     return collection
+
 
 def find_documents(collection, filter=None):
     try:
@@ -21,6 +29,7 @@ def find_documents(collection, filter=None):
         return documents
     except Exception as e:
         print(f"erreur: {str(e)} ")
+
 
 def connect_to_mongo(uri):
     mongo_uri = uri
@@ -34,9 +43,10 @@ def connect_to_mongo(uri):
 
     collection_marks = select_collection(db, collection_name_marks)
     collection_planning = select_collection(db, collection_name_planning)
-    collection_trombinoscope = select_collection(db, collection_name_trombinoscope)
+    collection_trombinoscope = select_collection(
+        db, collection_name_trombinoscope)
     collection_users = select_collection(db, collection_name_users)
-    
+
     return (
         client_mongo,
         collection_marks,
@@ -44,7 +54,8 @@ def connect_to_mongo(uri):
         collection_trombinoscope,
         collection_users
     )
-    
+
+
 async def display_marks(interaction, documents_marks):
     embeds = []
     for mark in documents_marks:
@@ -56,12 +67,10 @@ async def display_marks(interaction, documents_marks):
         cc2 = mark.get("cc2")
         exam = mark.get("exam")
 
-
         embed = discord.Embed()
         embed.title = f"Matière: {matiere}\n"
         embed.set_footer(text=f"Intervenant: {intervenant}\n")
         embed.colour = discord.Color.blue()  # Set the color to blue
-
 
         embed.add_field(name="CC1", value=cc1, inline=True)
         embed.add_field(name="CC2", value=cc2, inline=True)
@@ -72,8 +81,7 @@ async def display_marks(interaction, documents_marks):
 
     for embed in embeds:
         await interaction.channel.send(embed=embed)
-        
-        
+
 
 async def display_planning(interaction, documents_planning):
     embeds = []
@@ -97,14 +105,54 @@ async def display_planning(interaction, documents_planning):
         embed.add_field(name="Type", value=type, inline=True)
         embed.add_field(name="Modalité", value=modalite, inline=True)
 
-
         embeds.append(embed)
-
 
     for embed in embeds:
         await interaction.channel.send(embed=embed)
-        
-async def verify_if_user_exists(interaction: discord.Interaction,collection):
+
+
+async def perform_login(interaction: discord.Interaction, username: str, password: str):
+    login_url = "https://authentication.kordis.fr/oauth/authorize?response_type=token&client_id=skolae-app"
+
+    credentials = base64.b64encode(f"{username}:{password}".encode()).decode()
+    headers = {"Authorization": f"Basic {credentials}"}
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(login_url, headers=headers, allow_redirects=False) as response:
+            # Check the response status code
+            if response.status == 302:
+                # Define the document to insert or update
+                hashed_password = hashlib.sha512(password.encode('UTF-8'))
+                document = {
+                    "username": username,
+                    "password": hashed_password.digest(),
+                    "username_discord": interaction.user.name,
+                    "user_discord_id": interaction.user.id,
+                }
+                # decoded_password = hashed_password.hexdigest()
+
+                # print("Decoded password:", decoded_password)
+
+                # Define the query to find the document
+                query = {"user_discord_id": interaction.user.id}
+
+                # Perform the update operation
+                result = collection_users.update_one(
+                    query, {"$set": document}, upsert=True)
+
+                if result.upserted_id is not None:
+                    # Document inserted
+                    print("Document inserted:", result.upserted_id)
+                else:
+                    # Document updated
+                    print("Document updated:", query)
+
+                await interaction.response.send_message("Connexion réussie ! Vous avez maintenant accès à la commande '/scrape' !", ephemeral=True)
+            else:
+                await interaction.response.send_message("Connexion échouée. Veuillez réessayer", ephemeral=True)
+
+
+async def verify_if_user_exists(interaction: discord.Interaction, collection):
     doc = collection.find_one({"user_discord_id": interaction.user.id})
     if doc is None:
         await interaction.response.send_message('No Data found for {}, try to use command \'/scrape\'!'.format(interaction.user.name))
