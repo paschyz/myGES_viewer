@@ -68,7 +68,7 @@ async def display_marks(interaction, documents_marks):
         exam = mark.get("exam")
 
         embed = discord.Embed()
-        embed.title = f"Matière: {matiere}\n"
+        embed.title = f"Notes: {matiere}\n"
         embed.set_footer(text=f"Intervenant: {intervenant}\n")
         embed.colour = discord.Color.blue()  # Set the color to blue
 
@@ -86,7 +86,7 @@ async def display_marks(interaction, documents_marks):
 async def display_planning(interaction, documents_planning):
     embeds = []
     for planning in documents_planning:
-        duree = planning.get("duree")
+        duree = planning.get("duration")
         matiere = planning.get("matiere")
         intervenant = planning.get("intervenant")
         salle = planning.get("salle")
@@ -95,14 +95,13 @@ async def display_planning(interaction, documents_planning):
         date = planning.get("date")
 
         embed = discord.Embed()
-        embed.title = f"Matière: {matiere}"
+        embed.title = f"{type}: {matiere}"
         embed.set_footer(text=f"Intervenant: {intervenant}")
         embed.colour = discord.Color.blue()
 
         embed.add_field(name="Durée", value=duree, inline=True)
         embed.add_field(name="Date", value=date, inline=True)
         embed.add_field(name="Salle", value=salle, inline=True)
-        embed.add_field(name="Type", value=type, inline=True)
         embed.add_field(name="Modalité", value=modalite, inline=True)
 
         embeds.append(embed)
@@ -122,15 +121,16 @@ async def perform_login(interaction: discord.Interaction, username: str, passwor
             # Check the response status code
             if response.status == 302:
                 # Define the document to insert or update
-                hashed_password = hashlib.sha512(password.encode('UTF-8'))
+                base64_password = base64.b64encode(password.encode())
+                # Convert the encoded bytes to a string
+                encoded_password = base64_password.decode()
                 document = {
                     "username": username,
-                    "password": hashed_password.digest(),
+                    "password": encoded_password,
                     "username_discord": interaction.user.name,
                     "user_discord_id": interaction.user.id,
                 }
                 # decoded_password = hashed_password.hexdigest()
-
                 # print("Decoded password:", decoded_password)
 
                 # Define the query to find the document

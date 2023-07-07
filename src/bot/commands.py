@@ -3,6 +3,8 @@ from client import MyClient
 from utils import *
 from config import *
 
+from scrapper.utils import *
+
 
 def setup_commands(client: MyClient):
     client_mongo, collection_marks, collection_planning, collection_trombinoscope, collection_users = connect_to_mongo(
@@ -44,6 +46,11 @@ def setup_commands(client: MyClient):
     @client.tree.command(description="Permet de mettre à jour ses notes, planning et trombinoscope")
     async def scrape(interaction: discord.Interaction):
         await interaction.response.send_message(f'Permet de mettre à jour ses notes, planning et trombinoscope')
+
+        download_dir = os.path.join(os.getcwd(), 'src/scrapper/json')
+        await run_scraper(interaction.user,  download_dir,
+                          collection_marks, collection_planning, collection_users)
+        await interaction.channel.send(f'Permet de mettre à jour ses notes, planning et trombinoscope')
 
     @client.tree.command(description="Voir l'emploi du temps")
     async def planning(interaction: discord.Interaction):
