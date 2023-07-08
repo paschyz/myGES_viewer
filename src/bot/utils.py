@@ -6,6 +6,7 @@ import aiohttp
 from pymongo import MongoClient
 import discord
 import hashlib
+from carousel import Carousel
 
 password_salt = os.getenv("PASSWORD_SALT")
 
@@ -66,24 +67,28 @@ async def display_marks(interaction, documents_marks):
         intervenant = mark.get("intervenant")
         coef = mark.get("coef")
         ects = mark.get("ects")
-        cc1 = mark.get("cc1")
-        cc2 = mark.get("cc2")
+        cc_values = mark.get("cc_values")
         exam = mark.get("exam")
+        semester = mark.get("semestre")
 
         embed = discord.Embed()
         embed.title = f"Notes: {matiere}\n"
-        embed.set_footer(text=f"Intervenant: {intervenant}\n")
+        embed.description = f"Intervenant: {intervenant}\n"
         embed.colour = discord.Color.blue()  # Set the color to blue
 
-        embed.add_field(name="CC1", value=cc1, inline=True)
-        embed.add_field(name="CC2", value=cc2, inline=True)
+        cc_values_str = ", ".join(str(cc)
+                                  for cc in cc_values) if cc_values else "N/A"
+        embed.add_field(name="CCs", value=cc_values_str, inline=True)
         embed.add_field(name="Exam", value=exam, inline=True)
         embed.add_field(name="Coef.", value=coef, inline=True)
         embed.add_field(name="ECTS", value=ects, inline=True)
+        embed.add_field(name="Semestre", value=semester, inline=False)
+
         embeds.append(embed)
 
-    for embed in embeds:
-        await interaction.channel.send(embed=embed)
+    carousel = Carousel(embeds)
+    embeds[0].set_footer(text=f"{1}/{len(embeds)}")
+    await interaction.response.send_message(embed=embeds[0], view=carousel)
 
 
 async def display_planning(interaction, documents_planning):
@@ -99,7 +104,7 @@ async def display_planning(interaction, documents_planning):
 
         embed = discord.Embed()
         embed.title = f"{type}: {matiere}"
-        embed.set_footer(text=f"Intervenant: {intervenant}")
+        embed.description = f"Intervenant: {intervenant}"
         embed.colour = discord.Color.blue()
 
         embed.add_field(name="Durée", value=duree, inline=True)
@@ -109,8 +114,9 @@ async def display_planning(interaction, documents_planning):
 
         embeds.append(embed)
 
-    for embed in embeds:
-        await interaction.channel.send(embed=embed)
+    carousel = Carousel(embeds)
+    embeds[0].set_footer(text=f"{1}/{len(embeds)}")
+    await interaction.response.send_message(embed=embeds[0], view=carousel)
 
 
 async def display_trombinoscope(interaction, documents_trombinoscope):
@@ -124,15 +130,16 @@ async def display_trombinoscope(interaction, documents_trombinoscope):
         annee = trombinoscope.get("annee")
         embed = discord.Embed()
         embed.title = nom
-        embed.set_footer(text=f"{annee}")
+        embed.description = f"{annee}"
         embed.set_image(url=img_url)
         embed.colour = discord.Color.blue()
         embed.add_field(name="",
                         value=categorie, inline=False)
         embeds.append(embed)
 
-    for embed in embeds:
-        await interaction.channel.send(embed=embed)
+    carousel = Carousel(embeds)
+    embeds[0].set_footer(text=f"{1}/{len(embeds)}")
+    await interaction.response.send_message(embed=embeds[0], view=carousel)
 
 
 async def perform_login(interaction: discord.Interaction, username: str, password: str):

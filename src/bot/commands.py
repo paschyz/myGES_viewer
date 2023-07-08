@@ -19,6 +19,24 @@ def setup_commands(client: MyClient):
         except Exception as e:
             print(f"-- Error connecting to MongoDB: {str(e)}")
 
+    @client.tree.command(description="Voir les commandes disponibles")
+    async def help(interaction: discord.Interaction):
+        embed = discord.Embed(
+            title="Commandes disponibles:", description="", color=discord.Color.blue())
+
+        for command in client.tree.walk_commands():
+            if isinstance(command, discord.app_commands.Group):
+                subcommands = [
+                    f"{command.qualified_name} {subcommand.qualified_name}" for subcommand in command.commands]
+                value = ', '.join(subcommands)
+            else:
+                value = command.description
+            embed.add_field(
+                name=f"/{command.qualified_name}", value=value, inline=False)
+
+        await interaction.response.send_message(embed=embed)
+
+    # ... existing code ...
     @client.tree.command(description="Voir ses notes")
     async def notes(interaction: discord.Interaction):
         if not await verify_if_user_exists(interaction, collection_marks):
@@ -30,14 +48,6 @@ def setup_commands(client: MyClient):
             await display_marks(interaction, documents_marks)
         except Exception as e:
             print(f"-- Error : {str(e)}")
-
-    @client.tree.command(description="hi")
-    async def hi(interaction: discord.Interaction):
-        await interaction.response.send_message(f'hello, {interaction.user.name} !')
-
-    @client.tree.command(description="Je peux rejoindre votre groupe ouuuuu")
-    async def join(interaction: discord.Interaction):
-        await interaction.response.send_message(f'Dsl {interaction.user.name}, mais tu n\'es pas sur la liste prioritaire')
 
     @client.tree.command(description="Se connecter à MYges")
     async def login(interaction: discord.Interaction, username: str, password: str):

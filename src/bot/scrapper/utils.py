@@ -10,6 +10,7 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
@@ -150,13 +151,37 @@ async def run_scraper(discord_user, download_dir):
 
     salted_decoded_password = base64_password.decode()
     decoded_password = salted_decoded_password.replace(password_salt, '')
-    print(decoded_password)
     url = "https://myges.fr/#/"
     driver.get(url)
     time.sleep(1)
 
     login(username, decoded_password, driver)
     print("Logged in successfully.")
+
+    go_to_marks_page(driver)
+    print("Navigated to marks page.")
+
+    # Locate the dropdown element
+    dropdown_element = driver.find_element("id",
+                                           "marksForm:j_idt174:periodSelect")
+
+    options = driver.find_elements(
+        "css selector", ".ui-selectonemenu-item")
+    # dropdown_element.click()
+
+    # options[0].click()
+    # html = extract_html(driver)
+    data_label_list = [li.get_attribute('data-label') for li in options]
+    print(data_label_list)
+    for i, option in enumerate(options):
+        dropdown_element.click()
+        option.click()
+        print(f"scrapping {data_label_list[i]} section...")
+        semester = data_label_list[i]
+        html = extract_html(driver)
+        json_marks = get_marks(html)
+        insert_marks(json_marks, discord_user, semester)
+
     go_to_trombinoscope_student_page(driver)
 
     label_elements = driver.find_elements("css selector", 'label[for]')
@@ -176,15 +201,6 @@ async def run_scraper(discord_user, download_dir):
             click_next_page_trombinoscope(driver)
 
     insert_trombinoscope(result, discord_user)
-    # marks
-    go_to_marks_page(driver)
-
-    print("Navigated to marks page.")
-
-    html = extract_html(driver)
-    json_marks = get_marks(html)
-
-    insert_marks(json_marks, discord_user)
 
     # planning
     await asyncio.to_thread(go_to_planning_page, driver)
@@ -203,7 +219,7 @@ async def run_scraper(discord_user, download_dir):
     event_details = click_events(driver)
     json_data = json.dumps(event_details, indent=2, ensure_ascii=False)
     insert_planning(json_data, discord_user)
-
+    time.sleep(10)
     print("Scraping completed.")
     driver.quit()
 
@@ -254,6 +270,8 @@ def click_events(driver):
         event_date = css_to_date[event_left_property]
         event.click()
         get_event_details(driver, events_details, event_date)
+        actions = ActionChains(driver)
+        actions.move_to_element(close_icon).perform()
         close_icon.click()
     return events_details
 
@@ -283,27 +301,35 @@ def get_marks(html):
     table = soup.find('table', attrs={"role": "grid"})
 
     for row in table.tbody.find_all('tr'):
-        cells = row.find_all('td')
-        matiere = cells[0].text.strip()
-        intervenant = cells[1].text.strip()
-        coef = cells[2].text.strip()
-        ects = cells[3].text.strip()
-        cc1 = cells[4].text.strip()
-        cc2 = cells[5].text.strip()
-        exam = cells[6].text.strip()
-        cc1 = cc1.replace(',', '.') if cc1 else None
-        cc2 = cc2.replace(',', '.') if cc2 else None
-        exam = exam.replace(',', '.') if exam else None
-        row_data = {
-            "matiere": matiere,
-            "intervenant": intervenant,
-            "coef": float(coef) if coef else None,
-            "ects": float(ects) if ects else None,
-            "cc1": float(cc1) if cc1 else None,
-            "cc2": float(cc2) if cc2 else None,
-            "exam": float(exam) if exam else None
-        }
-        data.append(row_data)
+        try:
+            cells = row.find_all('td')
+            matiere = cells[0].text.strip()
+            intervenant = cells[1].text.strip()
+            coef = cells[2].text.strip()
+            ects = cells[3].text.strip()
+
+            cc_values = []
+            for i in range(4, len(cells)-1):
+                cc_value = cells[i].text.strip()
+                cc_value = cc_value.replace(',', '.') if cc_value else None
+                cc_values.append(float(cc_value) if cc_value else None)
+
+            exam = cells[-1].text.strip()
+            exam = exam.replace(',', '.') if exam else None
+
+            row_data = {
+                "matiere": matiere,
+                "intervenant": intervenant,
+                "coef": float(coef) if coef != "N.C" else None,
+                "ects": float(ects) if ects != "N.C" else None,
+                "cc_values": cc_values,
+                "exam": float(exam) if exam else None
+            }
+            data.append(row_data)
+        except IndexError:
+            # Handle the case when <td> elements are not found for the row
+            continue
+
     json_data = json.dumps(data, indent=2, ensure_ascii=False)
     return json_data
 
@@ -329,7 +355,7 @@ def setup_selenium_driver(download_dir):
     return driver
 
 
-def insert_marks(json_string,  user):
+def insert_marks(json_string,  user, semester):
     try:
         json_data = json.loads(json_string)
         documents = []
@@ -343,13 +369,14 @@ def insert_marks(json_string,  user):
                 'intervenant': item['intervenant'],
                 'coef': item['coef'],
                 'ects': item['ects'],
-                'cc1': item['cc1'],
-                'cc2': item['cc2'],
+                'cc_values': item['cc_values'],
                 'exam': item['exam'],
+                'semestre': semester,
                 'user_discord_id': user.id
             }
             documents.append(document)
-            query = {'user_discord_id': user.id, 'matiere': item['matiere']}
+            query = {'user_discord_id': user.id,
+                     'matiere': item['matiere']}
 
             result = collection_marks.update_one(
                 query, {'$set': document}, upsert=True)
