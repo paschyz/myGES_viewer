@@ -3,6 +3,7 @@ import os
 import json
 import asyncio
 import base64
+import re
 
 from dotenv import load_dotenv
 from selenium.webdriver.firefox.service import Service
@@ -12,6 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
+from config import *
 
 from bs4 import BeautifulSoup
 login_username = os.getenv("LOGIN_USERNAME")
@@ -40,19 +42,101 @@ def go_to_marks_page(driver):
     driver.get("https://myges.fr/student/marks")
 
 
+def go_to_trombinoscope_student_page(driver):
+    driver.get("https://myges.fr/student/student-directory")
+
+
+def go_to_trombinoscope_teacher_page(driver):
+    driver.get("https://myges.fr/student/student-teacher-directory")
+
+
 def go_to_planning_page(driver):
     driver.get("https://myges.fr/student/planning-calendar")
+
+
+def scrape_trombinoscope_page(driver, result, category_index, labels, year):
+    html = extract_html(driver)
+    soup = BeautifulSoup(html, 'html.parser')
+
+    names = soup.select('.mg_directory_text')
+    stripped_names = [re.sub(r'\s+', ' ', name.text.strip()) for name in names]
+    image_urls = []
+    image_tags = soup.select('td > img[id]:not([id=""])')
+    for img in image_tags:
+        src = img.get('src')
+        image_urls.append(src)
+    filtered_list = [item for item in image_urls if "https" in item]
+    data = []
+    students = dict(zip(stripped_names, filtered_list))
+    for name, img_url in students.items():
+        row_data = {
+            "nom": name,
+            "img_url": img_url,
+            "categorie": labels[category_index],
+            "annee": year
+        }
+        data.append(row_data)
+
+    json_data = json.dumps(data, indent=2, ensure_ascii=False)
+    result.extend(json.loads(json_data))
+
+
+def click_next_page_trombinoscope(driver):
+    driver.find_element("css selector", ".ui-paginator-next").click()
+
+
+def insert_trombinoscope(json_string, user):
+    try:
+        documents = []
+        inserted_count = 0
+        updated_count = 0
+
+        for item in json_string:
+            document = {
+                'user': user.name,
+                'nom': item['nom'],
+                'img_url': item['img_url'],
+                'categorie': item['categorie'],
+                'annee': item['annee'],
+                'user_discord_id': user.id
+            }
+            documents.append(document)
+            query = {'user_discord_id': user.id,
+                     'nom': item['nom'], 'categorie': item['categorie']}
+
+            result = collection_trombinoscope.update_one(
+                query, {'$set': document}, upsert=True)
+            if result.upserted_id is not None:
+                print(item['nom'])
+                inserted_count += 1
+            else:
+                updated_count += 1
+
+        print("Documents inserted:", inserted_count)
+        print("Documents updated:", updated_count)
+
+    except Exception as e:
+        print(f"Error inserting documents: {str(e)}")
 
 
 def extract_html(driver):
     return driver.page_source
 
 
-async def run_scraper(discord_user, download_dir, marks_collection, planning_collection, users_collection):
+def get_pages_trombinoscope(driver):
+    html = extract_html(driver)
+    soup = BeautifulSoup(html, 'html.parser')
+
+    paginator = soup.find(class_="ui-paginator-current").text.strip()
+    pages_number = paginator.split()[-1]
+    return pages_number
+
+
+async def run_scraper(discord_user, download_dir):
     print("Starting scraping...")
 
     driver = setup_selenium_driver(download_dir)
-    user = users_collection.find_one({"user_discord_id": discord_user.id})
+    user = collection_users.find_one({"user_discord_id": discord_user.id})
     if user and 'username' in user:
         print("username found")
     else:
@@ -72,34 +156,56 @@ async def run_scraper(discord_user, download_dir, marks_collection, planning_col
 
     login(username, decoded_password, driver)
     print("Logged in successfully.")
+    go_to_trombinoscope_student_page(driver)
+
+    label_elements = driver.find_elements("css selector", 'label[for]')
+    labels = [label.text.strip() for label in label_elements]
+    # while not .is_displayed():
+
+    year = driver.find_element("id", "j_idt172:periodSelect_label").text
+    result = []
+
+    for i, label in enumerate(label_elements):
+        label.click()
+        trombinoscope_pages = int(get_pages_trombinoscope(driver))
+        print(trombinoscope_pages)
+        for j in range(trombinoscope_pages):
+            scrape_trombinoscope_page(driver, result, i, labels, year)
+            time.sleep(0.1)
+            click_next_page_trombinoscope(driver)
+
+    insert_trombinoscope(result, discord_user)
+    # trombinoscope_collection.insert_many(result)
+    # scrape_trombinoscope_page(driver, json)
+    # insert_trombinoscope(json,  discord_user)
     # marks
-    go_to_marks_page(driver)
+    # go_to_marks_page(driver)
 
-    print("Navigated to marks page.")
+    # print("Navigated to marks page.")
 
-    html = extract_html(driver)
-    json_marks = get_marks(html)
+    # html = extract_html(driver)
+    # json_marks = get_marks(html)
 
-    insert_marks(json_marks, marks_collection, discord_user)
+    # insert_marks(json_marks,discord_user)
 
-    # planning
-    # Run blocking functions in separate threads
-    await asyncio.to_thread(go_to_planning_page, driver)
-    while not driver.find_element("id", "calendar:j_idt162").is_displayed():
-        await asyncio.sleep(1)
-    while True:
-        try:
-            driver.find_element("css selector", ".fc-event")
-            break
-        except Exception:
-            await asyncio.to_thread(driver.find_element("id", "calendar:nextMonth").click)
-            while driver.find_element("id", "j_idt10:mgLoadingBar").is_displayed():
-                await asyncio.sleep(1)
+    # # planning
+    # # Run blocking functions in separate threads
+    # await asyncio.to_thread(go_to_planning_page, driver)
+    # while not driver.find_element("id", "calendar:j_idt162").is_displayed():
+    #     await asyncio.sleep(1)
+    # while True:
+    #     try:
+    #         driver.find_element("css selector", ".fc-event")
+    #         break
+    #     except Exception:
+    #         await asyncio.to_thread(driver.find_element("id", "calendar:nextMonth").click)
+    #         while driver.find_element("id", "j_idt10:mgLoadingBar").is_displayed():
+    #             await asyncio.sleep(1)
 
-    html = extract_html(driver)
-    event_details = click_events(driver)
-    json_data = json.dumps(event_details, indent=2, ensure_ascii=False)
-    insert_planning(json_data, planning_collection, discord_user)
+    # html = extract_html(driver)
+    # event_details = click_events(driver)
+    # json_data = json.dumps(event_details, indent=2, ensure_ascii=False)
+    # insert_planning(json_data, discord_user)
 
     print("Scraping completed.")
     driver.quit()
@@ -227,7 +333,7 @@ def setup_selenium_driver(download_dir):
     return driver
 
 
-def insert_marks(json_string, collection, user):
+def insert_marks(json_string,  user):
     try:
         json_data = json.loads(json_string)
         documents = []
@@ -250,7 +356,7 @@ def insert_marks(json_string, collection, user):
             documents.append(document)
             query = {'user_discord_id': user.id, 'matiere': item['matiere']}
 
-            result = collection.update_one(
+            result = collection_marks.update_one(
                 query, {'$set': document}, upsert=True)
             if result.upserted_id is not None:
                 inserted_count += 1
@@ -264,7 +370,7 @@ def insert_marks(json_string, collection, user):
         print(f"Error inserting documents: {str(e)}")
 
 
-def insert_planning(json_string, collection, user):
+def insert_planning(json_string, user):
     try:
         json_data = json.loads(json_string)
         documents = []
@@ -287,7 +393,7 @@ def insert_planning(json_string, collection, user):
             query = {'user_discord_id':
                      user.id, 'matiere': item['matiere'], 'date': item['date'], 'duration': item['duration']}
 
-            result = collection.update_one(
+            result = collection_planning.update_one(
                 query, {'$set': document}, upsert=True)
             if result.upserted_id is not None:
                 inserted_count += 1

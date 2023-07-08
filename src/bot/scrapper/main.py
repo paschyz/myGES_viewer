@@ -24,5 +24,4 @@ marks_collection = db["marks"]
 planning_collection = db["planning"]
 # Define directory for downloaded images
 download_dir = os.path.join(os.getcwd(), 'src/scrapper/json')
-run_scraper(username, password, download_dir,
-            marks_collection, planning_collection)
+run_scraper(username, password, download_dir)

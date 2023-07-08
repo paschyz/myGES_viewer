@@ -110,6 +110,28 @@ async def display_planning(interaction, documents_planning):
         await interaction.channel.send(embed=embed)
 
 
+async def display_trombinoscope(interaction, documents_trombinoscope):
+    embeds = []
+    for trombinoscope in documents_trombinoscope:
+        nom = trombinoscope.get("nom")
+        img_url = trombinoscope.get("img_url")
+        user_discord_id = trombinoscope.get("user_discord_id")
+        user = trombinoscope.get("user")
+        categorie = trombinoscope.get("categorie")
+        annee = trombinoscope.get("annee")
+        embed = discord.Embed()
+        embed.title = nom
+        embed.set_footer(text=f"{annee}")
+        embed.set_image(url=img_url)
+        embed.colour = discord.Color.blue()
+        embed.add_field(name="",
+                        value=categorie, inline=False)
+        embeds.append(embed)
+
+    for embed in embeds:
+        await interaction.channel.send(embed=embed)
+
+
 async def perform_login(interaction: discord.Interaction, username: str, password: str):
     login_url = "https://authentication.kordis.fr/oauth/authorize?response_type=token&client_id=skolae-app"
 

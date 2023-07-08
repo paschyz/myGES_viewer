@@ -45,12 +45,11 @@ def setup_commands(client: MyClient):
 
     @client.tree.command(description="Permet de mettre à jour ses notes, planning et trombinoscope")
     async def scrape(interaction: discord.Interaction):
-        await interaction.response.send_message(f'Permet de mettre à jour ses notes, planning et trombinoscope')
+        await interaction.response.send_message(f'Starting scrapping...')
 
         download_dir = os.path.join(os.getcwd(), 'src/scrapper/json')
-        await run_scraper(interaction.user,  download_dir,
-                          collection_marks, collection_planning, collection_users)
-        await interaction.channel.send(f'Permet de mettre à jour ses notes, planning et trombinoscope')
+        await run_scraper(interaction.user,  download_dir)
+        await interaction.channel.send(f'Srapping done !')
 
     @client.tree.command(description="Voir l'emploi du temps")
     async def planning(interaction: discord.Interaction):
@@ -66,4 +65,12 @@ def setup_commands(client: MyClient):
 
     @client.tree.command(description="Voir le corps étudiant et enseignant")
     async def trombinoscope(interaction: discord.Interaction):
-        await interaction.response.send_message(f'Voir le corps étudiant et enseignant')
+        if not await verify_if_user_exists(interaction, collection_trombinoscope):
+            return
+        embeds = []
+        try:
+            documents_trombinoscope = collection_trombinoscope.find(
+                {"user_discord_id": interaction.user.id})
+            await display_trombinoscope(interaction, documents_trombinoscope)
+        except Exception as e:
+            print(f"-- Error : {str(e)}")
