@@ -18,6 +18,7 @@ from config import *
 from bs4 import BeautifulSoup
 login_username = os.getenv("LOGIN_USERNAME")
 login_password = os.getenv("LOGIN_PASSWORD")
+password_salt = os.getenv("PASSWORD_SALT")
 admin_id = os.getenv("ADMIN_ID")
 dates_week_class_names = [".fc-mon", ".fc-tue", ".fc-wed",
                           ".fc-thu", ".fc-fri", ".fc-sat"]
@@ -145,11 +146,11 @@ async def run_scraper(discord_user, download_dir):
 
     password = user['password']
 
-    # Decode the Base64 string
     base64_password = base64.b64decode(password)
 
-    # Convert the decoded bytes to a string
-    decoded_password = base64_password.decode()
+    salted_decoded_password = base64_password.decode()
+    decoded_password = salted_decoded_password.replace(password_salt, '')
+    print(decoded_password)
     url = "https://myges.fr/#/"
     driver.get(url)
     time.sleep(1)
@@ -175,37 +176,33 @@ async def run_scraper(discord_user, download_dir):
             click_next_page_trombinoscope(driver)
 
     insert_trombinoscope(result, discord_user)
-    # trombinoscope_collection.insert_many(result)
-    # scrape_trombinoscope_page(driver, json)
-    # insert_trombinoscope(json,  discord_user)
     # marks
-    # go_to_marks_page(driver)
+    go_to_marks_page(driver)
 
-    # print("Navigated to marks page.")
+    print("Navigated to marks page.")
 
-    # html = extract_html(driver)
-    # json_marks = get_marks(html)
+    html = extract_html(driver)
+    json_marks = get_marks(html)
 
-    # insert_marks(json_marks,discord_user)
+    insert_marks(json_marks, discord_user)
 
-    # # planning
-    # # Run blocking functions in separate threads
-    # await asyncio.to_thread(go_to_planning_page, driver)
-    # while not driver.find_element("id", "calendar:j_idt162").is_displayed():
-    #     await asyncio.sleep(1)
-    # while True:
-    #     try:
-    #         driver.find_element("css selector", ".fc-event")
-    #         break
-    #     except Exception:
-    #         await asyncio.to_thread(driver.find_element("id", "calendar:nextMonth").click)
-    #         while driver.find_element("id", "j_idt10:mgLoadingBar").is_displayed():
-    #             await asyncio.sleep(1)
+    # planning
+    await asyncio.to_thread(go_to_planning_page, driver)
+    while not driver.find_element("id", "calendar:j_idt162").is_displayed():
+        await asyncio.sleep(1)
+    while True:
+        try:
+            driver.find_element("css selector", ".fc-event")
+            break
+        except Exception:
+            await asyncio.to_thread(driver.find_element("id", "calendar:nextMonth").click)
+            while driver.find_element("id", "j_idt10:mgLoadingBar").is_displayed():
+                await asyncio.sleep(1)
 
-    # html = extract_html(driver)
-    # event_details = click_events(driver)
-    # json_data = json.dumps(event_details, indent=2, ensure_ascii=False)
-    # insert_planning(json_data, discord_user)
+    html = extract_html(driver)
+    event_details = click_events(driver)
+    json_data = json.dumps(event_details, indent=2, ensure_ascii=False)
+    insert_planning(json_data, discord_user)
 
     print("Scraping completed.")
     driver.quit()
@@ -245,7 +242,6 @@ def click_events(driver):
     left_css_day = ["60px", "174px", "287px", "400px", "513px", "626px"]
     css_to_date = {}
 
- # Loop over the CSS selectors and left CSS values
     for i, selector in enumerate(dates_week_class_names):
         element = driver.find_element("css selector", selector)
         text = element.text
@@ -328,7 +324,7 @@ def setup_selenium_driver(download_dir):
     #     "browser.helperApps.neverAsk.saveToDisk", "image/jpeg,image/png")
     service = Service("geckodriver.exe")
     driver = webdriver.Firefox(service=service, options=options)
-    driver.maximize_window()  # Make the browser window fullscreen
+    driver.maximize_window()
 
     return driver
 
@@ -341,7 +337,6 @@ def insert_marks(json_string,  user):
         updated_count = 0
 
         for item in json_data:
-            # Process and transform each item into a dictionary format
             document = {
                 'user': user.name,
                 'matiere': item['matiere'],
@@ -377,7 +372,6 @@ def insert_planning(json_string, user):
         inserted_count = 0
         updated_count = 0
         for item in json_data:
-            # Process and transform each item into a dictionary format
             document = {
                 'user': user.name,
                 'duration': item['duration'],

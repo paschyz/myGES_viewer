@@ -1,10 +1,13 @@
 from config import *
+import os
 
 import base64
 import aiohttp
 from pymongo import MongoClient
 import discord
 import hashlib
+
+password_salt = os.getenv("PASSWORD_SALT")
 
 
 def connect_to_mongodb(uri):
@@ -142,8 +145,9 @@ async def perform_login(interaction: discord.Interaction, username: str, passwor
         async with session.get(login_url, headers=headers, allow_redirects=False) as response:
             # Check the response status code
             if response.status == 302:
+                salted_password = password+password_salt
                 # Define the document to insert or update
-                base64_password = base64.b64encode(password.encode())
+                base64_password = base64.b64encode(salted_password.encode())
                 # Convert the encoded bytes to a string
                 encoded_password = base64_password.decode()
                 document = {
