@@ -1,0 +1,151 @@
+[{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8321"
+  },
+  "nom": "ABIB JAMES",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op5kStmsQvmdgCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c832c"
+  },
+  "nom": "ARULBALAN Vithushan",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-opyEhC3OR2XKpCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8336"
+  },
+  "nom": "ATLANI Samuel",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-opwet968Ryx4aCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8340"
+  },
+  "nom": "BARBOTIN Valentin",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op0z8egzDLEzgCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c834c"
+  },
+  "nom": "BIRON Raphaël",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-opw8yO3pUm8wsCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8356"
+  },
+  "nom": "CRETOIS Charles",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op0Q-2EXxkOAACZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8361"
+  },
+  "nom": "DIA Abdoulaye",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op9F5uNinWFxgCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c836c"
+  },
+  "nom": "GUILLEMONT Fanny",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op8N-5I8LfQ4ZCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8376"
+  },
+  "nom": "KARAER Erdal",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op6P1FDGGopA1CZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8381"
+  },
+  "nom": "KIELT Ronan",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op-dEUv5n1A5-CZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c838c"
+  },
+  "nom": "LAURENT Mélissa",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op_RfUKpXaqLNCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c8399"
+  },
+  "nom": "LECHENE Corentin",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op2iivI9hA3vCCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c83a8"
+  },
+  "nom": "OUERTANI Chaima",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op5P767U5_5wnCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c83b8"
+  },
+  "nom": "RIVIERE Julien",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op-4LlugXkFbGCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+},{
+  "_id": {
+    "$oid": "64a8a8ce8ffe2b536d4c83c2"
+  },
+  "nom": "SLIMANE Abdallah",
+  "user_discord_id": {
+    "$numberLong": "314809676447350785"
+  },
+  "img_url": "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op74ly8XT5oawCZSMwXEBz3M?pfdrid_c=true",
+  "user": "paschyz"
+}]

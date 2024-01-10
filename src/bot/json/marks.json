@@ -1,0 +1,157 @@
+[{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a33"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - agilité et scrum",
+  "intervenant": "M. COAT",
+  "coef": 2,
+  "ects": 2,
+  "cc1": 10,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a34"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - algorithmique avancée : listes, tris et arbres",
+  "intervenant": "M. RAYNAL",
+  "coef": 2,
+  "ects": 2,
+  "cc1": 8.5,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a35"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - anglais professionnel",
+  "intervenant": "M. RAULIN",
+  "coef": 2,
+  "ects": 2,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a36"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - api avec nodejs",
+  "intervenant": "M. BRIATTE",
+  "coef": 2,
+  "ects": 2,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a37"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - bases de données nosql",
+  "intervenant": "M. DELON",
+  "coef": 2,
+  "ects": 2,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a38"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - développement frontend avec angular",
+  "intervenant": "M. BUSO",
+  "coef": 2,
+  "ects": 2,
+  "cc1": 20,
+  "cc2": 16,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a39"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - linux orienté développeurs",
+  "intervenant": "M. KIFFER",
+  "coef": 2,
+  "ects": 2,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a3a"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - mission en entreprise",
+  "intervenant": "Mme CRAMAUSSEL",
+  "coef": 1,
+  "ects": 1,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a3b"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - open vie associative",
+  "intervenant": "Mme RAGONNET",
+  "coef": 2,
+  "ects": 2,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a3c"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - projet annuel",
+  "intervenant": "M. SANANES",
+  "coef": 3,
+  "ects": 3,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a3d"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - scripting python",
+  "intervenant": "M. RAYNAL",
+  "coef": 2,
+  "ects": 2,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a47cccd06979b97bb05a3e"
+  },
+  "user": "paschyz",
+  "matiere": "S2 - tests logiciels",
+  "intervenant": "M. NYANTCHOU NOUBISSIE",
+  "coef": 2,
+  "ects": 2,
+  "cc1": null,
+  "cc2": null,
+  "exam": null,
+  "user_discord_id": 314809676447350785
+}]

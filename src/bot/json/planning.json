@@ -1,0 +1,66 @@
+[{
+  "_id": {
+    "$oid": "64a54f7759a29520452b2a12"
+  },
+  "duree": "09:45 - 11:15",
+  "matiere": "S2 - scripting python",
+  "intervenant": "M. RAYNAL",
+  "salle": "ERARD - Salle 01",
+  "type": "Soutenance",
+  "modalite": "Présentiel",
+  "date": "17/07/23",
+  "user": "paschyz",
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a54f7759a29520452b2a13"
+  },
+  "duree": "14:00 - 15:30",
+  "matiere": "S2 - bases de données nosql",
+  "intervenant": "M. DELON",
+  "salle": "B023",
+  "type": "Cours",
+  "modalite": "Distanciel",
+  "date": "18/07/23",
+  "user": "paschyz",
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a54f7759a29520452b2a14"
+  },
+  "duree": "16:30 - 18:00",
+  "matiere": "S2 - développement frontend avec angular",
+  "intervenant": "M. BUSO",
+  "salle": "C401",
+  "type": "TD",
+  "modalite": "Présentiel",
+  "date": "19/07/23",
+  "user": "paschyz",
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a54f7759a29520452b2a15"
+  },
+  "duree": "09:00 - 10:30",
+  "matiere": "S2 - agilité et scrum",
+  "intervenant": "M. COAT",
+  "salle": "B001",
+  "type": "Cours",
+  "modalite": "Distanciel",
+  "date": "20/07/23",
+  "user": "paschyz",
+  "user_discord_id": 314809676447350785
+},{
+  "_id": {
+    "$oid": "64a54f7759a29520452b2a16"
+  },
+  "duree": "11:30 - 13:00",
+  "matiere": "S2 - mission en entreprise",
+  "intervenant": "Mme CRAMAUSSEL",
+  "salle": "B303",
+  "type": "TD",
+  "modalite": "Présentiel",
+  "date": "21/07/23",
+  "user": "paschyz",
+  "user_discord_id": 314809676447350785
+}]
